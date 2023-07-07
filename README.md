@@ -588,24 +588,23 @@ Other Style Guides
     ```
 
   <a name="strings--line-length"></a><a name="6.2"></a>
-  - [6.2](#strings--line-length) Strings that cause the line to go over 100 characters should not be written across multiple lines using string concatenation.
+  - [6.2](#strings--line-length) Strings that cause the line to go over 140 characters can be written across multiple lines using string concatenation.
 
-    > Why? Broken strings are painful to work with and make code less searchable.
 
     ```javascript
-    // bad
-    const errorMessage = 'This is a super long error that was thrown because \
-    of Batman. When you stop to think about how Batman had anything to do \
-    with this, you would get nowhere \
-    fast.';
+    // recommended by Airbnb but not preferred by the BoxMaker dev team
+    const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
 
-    // bad
+    // ok. The BoxMaker team prefers this format since it is easier to read in an editor but takes a performance hit from creating multiple strings
     const errorMessage = 'This is a super long error that was thrown because ' +
       'of Batman. When you stop to think about how Batman had anything to do ' +
       'with this, you would get nowhere fast.';
 
-    // good
-    const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.';
+    // best. This only creates one string while also making it easy to read
+    const errorMessage = 'This is a super long error that was thrown because \
+    of Batman. When you stop to think about how Batman had anything to do \
+    with this, you would get nowhere \
+    fast.';
     ```
 
   <a name="es6-template-literals"></a><a name="6.4"></a>
@@ -672,9 +671,14 @@ Other Style Guides
       // ...
     };
 
-    // good
+    // recommended by Airbnb but not preferred by the Boxmaker dev team
     // lexical name distinguished from the variable-referenced invocation(s)
     const short = function longUniqueMoreDescriptiveLexicalFoo() {
+      // ...
+    };
+ 
+    // good - preferred way by the Boxmaker dev team
+    const longUniqueMoreDescriptiveLexicalFoo = () => {
       // ...
     };
     ```
@@ -836,9 +840,11 @@ Other Style Guides
     ```
 
   <a name="functions--mutate-params"></a><a name="7.12"></a>
-  - [7.12](#functions--mutate-params) Never mutate parameters. eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-param-reassign)
+  - [7.12](#functions--mutate-params) Try to avoid mutating parameters. Instead, create and return a new object if possible. eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-param-reassign)
 
     > Why? Manipulating objects passed in as parameters can cause unwanted variable side effects in the original caller.
+
+    > This is not a strict rule. There are certain scenarios where the BXM team makes exceptions.
 
     ```javascript
     // bad
@@ -1306,14 +1312,14 @@ Other Style Guides
   - [10.1](#modules--use-them) Always use modules (`import`/`export`) over a non-standard module system. You can always transpile to your preferred module system.
 
     > Why? Modules are the future, let’s start using the future now.
-
     ```javascript
     // bad
     const AirbnbStyleGuide = require('./AirbnbStyleGuide');
     module.exports = AirbnbStyleGuide.es6;
 
-    // ok
-    import AirbnbStyleGuide from './AirbnbStyleGuide';
+    // ok  
+    // This syntax may be required inside webcenter-service or fpk-backend-api
+     import AirbnbStyleGuide from './AirbnbStyleGuide';
     export default AirbnbStyleGuide.es6;
 
     // best
